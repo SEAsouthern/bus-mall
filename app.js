@@ -28,7 +28,7 @@ new BusMall('pen', 'img/pen.jpg');
 new BusMall('pet-sweep', 'img/pet-sweep.jpg');
 new BusMall('scissors', 'img/scissors.jpg');
 new BusMall('shark', 'img/shark.jpg');
-new BusMall('sweep', 'img/sweep.jpg');
+new BusMall('sweep', 'img/sweep.png');
 new BusMall('tauntaun', 'img/tauntaun.jpg');
 new BusMall('unicorn', 'img/unicorn.jpg');
 new BusMall('usb', 'img/usb.gif');
