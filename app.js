@@ -1,6 +1,7 @@
 'use strict';
 
 var imageElements = document.getElementsByTagName('img');
+var allBusMallIndex = [];
 var busMallIndex1 = 0;
 var busMallIndex2 = 1;
 var busMallIndex3 = 2;
@@ -11,8 +12,12 @@ function BusMall(name, imageUrl) {
   this.name = name;
   this.imageUrl = imageUrl;
   this.timesClicked = 0;
+  this.timesViewed = 0;
   allBusMall.push(this);
 }
+
+// Not haveing to repeat names over and over
+// this.imageUrl= `img/${name}.jpg`
 
 new BusMall('bag', 'img/bag.jpg');
 new BusMall('banana', 'img/banana.jpg');
@@ -36,47 +41,74 @@ new BusMall('wine-glass', 'img/wine-glass.jpg');
 new BusMall('water-can', 'img/water-can.jpg');
 
 
-var totalClicks = 0;
+var totalClicks = -1;
 function imageWasClicked(event) {
   totalClicks++;
-  if(event.srcElement.id === '1') {
-    allBusMall[busMallIndex1].timesClicked++;
-  } else if (event.srcElement.id === '2') {
-    allBusMall[busMallIndex2].timesClicked++;
-  } else if (event.srcElement.id === '3') {
-    allBusMall[busMallIndex3].timesClicked++;
-  }
+  if(event) {
+    if(event.srcElement.id === '1') {
+      allBusMall[busMallIndex1].timesClicked++;
+    } else if (event.srcElement.id === '2') {
+      allBusMall[busMallIndex2].timesClicked++;
+    } else if (event.srcElement.id === '3') {
+      allBusMall[busMallIndex3].timesClicked++;
+    }
+    // Add somehow to count views.
+    // allBusMall[busMallIndex1].timesViewed++; ?
 
-  // Add stuff for 3rd image
-  var nextBusMallIndex1 = Math.floor(Math.random() * allBusMall.length);
-  while((nextBusMallIndex1 === busMallIndex1) || (nextBusMallIndex1 === busMallIndex2) || (nextBusMallIndex1 === busMallIndex3)) {
-    nextBusMallIndex1 = Math.floor(Math.random() * allBusMall.length);
-  }
-  var nextBusMallIndex2 = Math.floor(Math.random() * allBusMall.length);
-  while((nextBusMallIndex2 === busMallIndex1) || (nextBusMallIndex2 === busMallIndex2) || (nextBusMallIndex2 === nextBusMallIndex1) || (nextBusMallIndex2 === nextBusMallIndex3)) {
-    nextBusMallIndex2 = Math.floor(Math.random() * allBusMall.length);
-  }
-  var nextBusMallIndex3 = Math.floor(Math.random() * allBusMall.length);
-  while((nextBusMallIndex3 === busMallIndex1) || (nextBusMallIndex3 === busMallIndex2) || (nextBusMallIndex3 === busMallIndex3) || (nextBusMallIndex2 === nextBusMallIndex1)) {
-    nextBusMallIndex2 = Math.floor(Math.random() * allBusMall.length);
-  }
+    var nextBusMallIndex1 = Math.floor(Math.random() * allBusMall.length);
+    while((nextBusMallIndex1 === busMallIndex1) || (nextBusMallIndex1 === busMallIndex2) || (nextBusMallIndex1 === busMallIndex3)) {
+      nextBusMallIndex1 = Math.floor(Math.random() * allBusMall.length);
+    }
+    var nextBusMallIndex2 = Math.floor(Math.random() * allBusMall.length);
+    while((nextBusMallIndex2 === busMallIndex1) || (nextBusMallIndex2 === busMallIndex2) || (nextBusMallIndex2 === nextBusMallIndex1) || (nextBusMallIndex2 === nextBusMallIndex3)) {
+      nextBusMallIndex2 = Math.floor(Math.random() * allBusMall.length);
+    }
+    var nextBusMallIndex3 = Math.floor(Math.random() * allBusMall.length);
+    while((nextBusMallIndex3 === busMallIndex1) || (nextBusMallIndex3 === busMallIndex2) || (nextBusMallIndex3 === busMallIndex3) || (nextBusMallIndex3 === nextBusMallIndex1) || (nextBusMallIndex3 === nextBusMallIndex2)) {
+      nextBusMallIndex3 = Math.floor(Math.random() * allBusMall.length);
+    }
 
-  busMallIndex1 = nextBusMallIndex1;
-  busMallIndex2 = nextBusMallIndex2;
-  busMallIndex3 = nextBusMallIndex3;
 
-  // display the goats
-  imageElements[0].src = allBusMall[busMallIndex1].imageUrl;
-  imageElements[1].src = allBusMall[busMallIndex2].imageUrl;
-  imageElements[2].src = allBusMall[busMallIndex3].imageUrl;
+    busMallIndex1 = nextBusMallIndex1;
+    busMallIndex2 = nextBusMallIndex2;
+    busMallIndex3 = nextBusMallIndex3;
 
-  if(totalClicks >= 25) {
-    var footerEl = document.getElementsByTagName('footer')[0];
-    footerEl.textContent = 'Thanks for picking!';
+    imageElements[0].src = allBusMall[busMallIndex1].imageUrl;
+    allBusMall[busMallIndex1].timesViewed++;
+    imageElements[1].src = allBusMall[busMallIndex2].imageUrl;
+    allBusMall[busMallIndex2].timesViewed++;
+    imageElements[2].src = allBusMall[busMallIndex3].imageUrl;
+    allBusMall[busMallIndex3].timesViewed++;
+
+    // Move random display here as an else if.
+
+
+    if(totalClicks >= 5) {
+      for (var i = 0; i <imageElements.length; i++) {
+        imageElements[i].removeEventListener('click', imageWasClicked);}
+      var footerEl = document.getElementsByTagName('footer')[0];
+      footerEl.textContent = 'Thanks for picking!';
+      BusMall.displayResults();
+    }
   }
 }
 
+imageWasClicked();
 
 for (var i = 0; i < imageElements.length; i++) {
   imageElements[i].addEventListener('click', imageWasClicked);
 }
+
+// create table after 25 clicks
+// function makeTable() {
+
+// }
+
+BusMall.prototype.displayResults = function() {
+  if(this.selected === true) {
+    var newLi = document.createElement('li');
+    newLi.textContent = `${this.name} had ${this.timesClicked} clicks and was viewed ${this.timesViewed} times.`;
+    var getResults= document.getElementById('results');
+    getResults.appendChild(newLi);
+  }
+};
