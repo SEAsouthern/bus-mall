@@ -1,7 +1,6 @@
 'use strict';
 
 var imageElements = document.getElementsByTagName('img');
-var allBusMallIndex = [];
 var busMallIndex1 = 0;
 var busMallIndex2 = 1;
 var busMallIndex3 = 2;
@@ -13,8 +12,19 @@ function BusMall(name, imageUrl) {
   this.imageUrl = imageUrl;
   this.timesClicked = 0;
   this.timesViewed = 0;
+  this.percClicked = 0;
   allBusMall.push(this);
 }
+
+function getBusMallArray(property) {
+  var answer = [];
+  for (var i = 0; i < allBusMall.length; i++) {
+    answer[i] = allBusMall[i][property];
+  }
+  return answer;
+}
+
+getBusMallArray();
 
 // Not haveing to repeat names over and over
 // this.imageUrl= `img/${name}.jpg`
@@ -83,12 +93,13 @@ function imageWasClicked(event) {
     // Move random display here as an else if.
 
 
-    if(totalClicks >= 5) {
+    if(totalClicks >= 25) {
       for (var i = 0; i <imageElements.length; i++) {
         imageElements[i].removeEventListener('click', imageWasClicked);}
-      var footerEl = document.getElementsByTagName('footer')[0];
-      footerEl.textContent = 'Thanks for picking!';
-      BusMall.displayResults();
+      renderChart();
+      // var footerEl = document.getElementsByTagName('footer')[0];
+      // footerEl.textContent = 'Thanks for picking!';
+      // BusMall.displayResults();
     }
   }
 }
@@ -112,3 +123,161 @@ BusMall.prototype.displayResults = function() {
     getResults.appendChild(newLi);
   }
 };
+
+// BusMall.prototype.percClicked = function() {
+//   (BusMall.timesViewed/BusMall.timesClicked);
+// };
+
+function renderChart() {
+  var ctx = document.getElementById('resultsChart').getContext('2d');
+  var resultsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getBusMallArray('name'),
+      datasets: [{
+        label: '# of Votes',
+        data: getBusMallArray('timesClicked'),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+// if(totalClicks >= 5) {
+//   var ctx = document.getElementById('resultsChart').getContext('2d');
+//   // eslint-disable-next-line no-undef
+//   var resultsChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: getBusMallArray('name'),
+//       datasets: [{
+//         label: '# of Votes',
+//         data: getBusMallArray('timesClicked'),
+//         backgroundColor: [
+//           'rgba(255, 99, 132, 0.2)',
+//           'rgba(54, 162, 235, 0.2)',
+//           'rgba(255, 206, 86, 0.2)',
+//           'rgba(75, 192, 192, 0.2)',
+//           'rgba(153, 102, 255, 0.2)',
+//           'rgba(255, 159, 64, 0.2)',
+//           'rgba(255, 99, 132, 0.2)',
+//           'rgba(54, 162, 235, 0.2)',
+//           'rgba(255, 206, 86, 0.2)',
+//           'rgba(75, 192, 192, 0.2)',
+//           'rgba(153, 102, 255, 0.2)',
+//           'rgba(255, 159, 64, 0.2)',
+//           'rgba(255, 99, 132, 0.2)',
+//           'rgba(54, 162, 235, 0.2)',
+//           'rgba(255, 206, 86, 0.2)',
+//           'rgba(75, 192, 192, 0.2)',
+//           'rgba(153, 102, 255, 0.2)',
+//           'rgba(255, 159, 64, 0.2)',
+//           'rgba(255, 99, 132, 0.2)',
+//           'rgba(54, 162, 235, 0.2)',
+//           'rgba(255, 206, 86, 0.2)',
+//           'rgba(75, 192, 192, 0.2)',
+//           'rgba(153, 102, 255, 0.2)',
+//           'rgba(255, 159, 64, 0.2)'
+//         ],
+//         borderColor: [
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)',
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)',
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)',
+//           'rgba(255, 99, 132, 1)',
+//           'rgba(54, 162, 235, 1)',
+//           'rgba(255, 206, 86, 1)',
+//           'rgba(75, 192, 192, 1)',
+//           'rgba(153, 102, 255, 1)',
+//           'rgba(255, 159, 64, 1)'
+//         ],
+//         borderWidth: 1
+//       }]
+//     },
+//     options: {
+//       scales: {
+//         yAxes: [{
+//           ticks: {
+//             beginAtZero: true,
+//             stepSize: 1
+//           }
+//         }]
+//       }
+//     }
+//   });
+// }
