@@ -7,19 +7,29 @@ var busMallIndex3 = 2;
 
 var allBusMall = [];
 
-function BusMall(name, imageUrl) {
+function BusMall(name, imageUrl, timesClicked, timesViewed) {
   this.name = name;
   this.imageUrl = imageUrl;
-  this.timesClicked = 0;
-  this.timesViewed = 0;
+  if (timesClicked) {
+    this.timesClicked = timesClicked;
+  }
+  else {
+    this.timesClicked = 0;
+  }
+  if (timesViewed) {
+    this.timesViewed = timesViewed;
+  }
+  else {
+    this.timesViewed = 0;
+  }
   this.percClicked = 0;
   allBusMall.push(this);
 }
 
 function getBusMallArray(property) {
   var answer = [];
-  for (var i = 0; i < allBusMall.length; i++) {
-    answer[i] = allBusMall[i][property];
+  for (var j = 0; j < allBusMall.length; j++) {
+    answer[j] = allBusMall[j][property];
   }
   return answer;
 }
@@ -29,26 +39,40 @@ getBusMallArray();
 // Not haveing to repeat names over and over
 // this.imageUrl= `img/${name}.jpg`
 
-new BusMall('bag', 'img/bag.jpg');
-new BusMall('banana', 'img/banana.jpg');
-new BusMall('bathroom', 'img/bathroom.jpg');
-new BusMall('boots', 'img/boots.jpg');
-new BusMall('breakfast', 'img/breakfast.jpg');
-new BusMall('bubblegum', 'img/bubblegum.jpg');
-new BusMall('chair', 'img/chair.jpg');
-new BusMall('cthulhu', 'img/cthulhu.jpg');
-new BusMall('dog-duck', 'img/dog-duck.jpg');
-new BusMall('dragon', 'img/dragon.jpg');
-new BusMall('pen', 'img/pen.jpg');
-new BusMall('pet-sweep', 'img/pet-sweep.jpg');
-new BusMall('scissors', 'img/scissors.jpg');
-new BusMall('shark', 'img/shark.jpg');
-new BusMall('sweep', 'img/sweep.png');
-new BusMall('tauntaun', 'img/tauntaun.jpg');
-new BusMall('unicorn', 'img/unicorn.jpg');
-new BusMall('usb', 'img/usb.gif');
-new BusMall('wine-glass', 'img/wine-glass.jpg');
-new BusMall('water-can', 'img/water-can.jpg');
+var savedBusMallString = localStorage.getItem('savedBusMall');
+if (savedBusMallString) {
+  var arrayOfNotBusMall = JSON.parse(savedBusMallString);
+  for (var k = 0; k < arrayOfNotBusMall.length; k++) {
+    new BusMall(arrayOfNotBusMall[k].name, arrayOfNotBusMall[k].imageUrl, arrayOfNotBusMall[k].timesClicked, arrayOfNotBusMall[k].timesViewed);
+  }
+
+} else {
+
+  new BusMall('bag', 'img/bag.jpg');
+  new BusMall('banana', 'img/banana.jpg');
+  new BusMall('bathroom', 'img/bathroom.jpg');
+  new BusMall('boots', 'img/boots.jpg');
+  new BusMall('breakfast', 'img/breakfast.jpg');
+  new BusMall('bubblegum', 'img/bubblegum.jpg');
+  new BusMall('chair', 'img/chair.jpg');
+  new BusMall('cthulhu', 'img/cthulhu.jpg');
+  new BusMall('dog-duck', 'img/dog-duck.jpg');
+  new BusMall('dragon', 'img/dragon.jpg');
+  new BusMall('pen', 'img/pen.jpg');
+  new BusMall('pet-sweep', 'img/pet-sweep.jpg');
+  new BusMall('scissors', 'img/scissors.jpg');
+  new BusMall('shark', 'img/shark.jpg');
+  new BusMall('sweep', 'img/sweep.png');
+  new BusMall('tauntaun', 'img/tauntaun.jpg');
+  new BusMall('unicorn', 'img/unicorn.jpg');
+  new BusMall('usb', 'img/usb.gif');
+  new BusMall('wine-glass', 'img/wine-glass.jpg');
+  new BusMall('water-can', 'img/water-can.jpg');
+}
+
+// for (var i =0; i <3; i++) {
+//   allBusMall[i].timesViewed++;
+// }
 
 
 var totalClicks = -1;
@@ -92,8 +116,9 @@ function imageWasClicked(event) {
 
     // Move random display here as an else if.
 
-
+    // move the display random images to an else if under < 25 clicks
     if(totalClicks >= 25) {
+      localStorage.setItem('savedBusMall', JSON.stringify(allBusMall));
       for (var i = 0; i <imageElements.length; i++) {
         imageElements[i].removeEventListener('click', imageWasClicked);}
       renderChart();
