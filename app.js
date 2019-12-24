@@ -7,6 +7,8 @@ var busMallIndex3 = 2;
 
 var allBusMall = [];
 
+// This is my constructor function.
+
 function BusMall(name, imageUrl, timesClicked, timesViewed) {
   this.name = name;
   this.imageUrl = imageUrl;
@@ -38,6 +40,8 @@ getBusMallArray();
 
 // Not haveing to repeat names over and over
 // this.imageUrl= `img/${name}.jpg`
+
+// The below populates new BusMall items, either from local storage or from the data in the else statement.
 
 var savedBusMallString = localStorage.getItem('savedBusMall');
 if (savedBusMallString) {
@@ -88,6 +92,8 @@ function imageWasClicked(event) {
     }
     // Add somehow to count views.
     // allBusMall[busMallIndex1].timesViewed++; ?
+
+    // The below makes sure non repeating images are displayed.
 
     var nextBusMallIndex1 = Math.floor(Math.random() * allBusMall.length);
     while((nextBusMallIndex1 === busMallIndex1) || (nextBusMallIndex1 === busMallIndex2) || (nextBusMallIndex1 === busMallIndex3)) {
@@ -140,18 +146,20 @@ for (var i = 0; i < imageElements.length; i++) {
 
 // }
 
-BusMall.prototype.displayResults = function() {
-  if(this.selected === true) {
-    var newLi = document.createElement('li');
-    newLi.textContent = `${this.name} had ${this.timesClicked} clicks and was viewed ${this.timesViewed} times.`;
-    var getResults= document.getElementById('results');
-    getResults.appendChild(newLi);
-  }
-};
+// BusMall.prototype.displayResults = function() {
+//   if(this.selected === true) {
+//     var newLi = document.createElement('li');
+//     newLi.textContent = `${this.name} had ${this.timesClicked} clicks and was viewed ${this.timesViewed} times.`;
+//     var getResults= document.getElementById('results');
+//     getResults.appendChild(newLi);
+//   }
+// };
 
 // BusMall.prototype.percClicked = function() {
 //   (BusMall.timesViewed/BusMall.timesClicked);
 // };
+
+// The below function renders the Chart
 
 function renderChart() {
   var ctx = document.getElementById('resultsChart').getContext('2d');
